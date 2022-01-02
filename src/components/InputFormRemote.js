@@ -29,7 +29,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const label = 'あなたの名前';
+  const label = '相手の名前';
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -39,8 +39,6 @@ export default function SignIn() {
       password: data.get('password'),
     });
   };
-
-  if (true) return <></>;
 
   return (
     <ThemeProvider theme={theme}>

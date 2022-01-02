@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import InputFormLoacl from './InputFormLoacl';
 import InputFormRemote from './InputFormRemote';
 
@@ -16,10 +16,18 @@ const getMedia = async () => {
 getMedia();
 
 const App = () => {
+  const [localPeerName, setLocalPeerName] = useState('');
+  const [remotePeerName, setRemotePeerName] = useState('');
   return (
     <>
-      <InputFormLoacl />
-      <InputFormRemote />
+      <InputFormLoacl
+        localPeerName={localPeerName}
+        setLocalPeerName={setLocalPeerName}
+      />
+      <InputFormRemote
+        remotePeerName={remotePeerName}
+        setRemotePeerName={setRemotePeerName}
+      />
     </>
   );
 };
