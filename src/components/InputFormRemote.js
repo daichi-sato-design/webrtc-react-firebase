@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -26,19 +26,31 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
-
-export default function SignIn({ remotePeerName, setRemotePeerName }) {
+export default function SignIn({
+  localPeerName,
+  remotePeerName,
+  setRemotePeerName,
+}) {
+  const [name, setName] = useState('');
+  const [disabled, setDisabled] = useState(false);
   const label = '相手の名前';
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+  const theme = createTheme();
+
+  useEffect(() => {
+    const disabled = name === '';
+    setDisabled(disabled);
+  }, [name]);
+
+  const initializeRemotePeerName = useCallback(
+    (e) => {
+      e.preventDefault();
+      setRemotePeerName(name);
+    },
+    [name, setRemotePeerName]
+  );
+
+  if (localPeerName === '') return null;
+  if (remotePeerName !== '') return null;
 
   return (
     <ThemeProvider theme={theme}>
@@ -57,7 +69,9 @@ export default function SignIn({ remotePeerName, setRemotePeerName }) {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={(e) => {
+              initializeRemotePeerName(e);
+            }}
             noValidate
             sx={{ mt: 2, width: 1 }}
           >
@@ -68,12 +82,15 @@ export default function SignIn({ remotePeerName, setRemotePeerName }) {
               label={label}
               name="name"
               autoFocus
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 2, mb: 2, py: 2 }}
+              disabled={disabled}
             >
               決定
             </Button>
